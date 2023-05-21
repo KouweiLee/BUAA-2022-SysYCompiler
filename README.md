@@ -166,7 +166,7 @@ LLVM我认为是一种相当高度模块化的设计，具体来讲，其中面�
 
 * LLVM IR中间代码重点类架构
 
-![Move](D:/Typora/img/Move.svg)
+<img width="870" alt="image" src="https://github.com/KouweiLee/BUAA-2022-SysYCompiler/assets/98637586/94ffacab-cf8b-46b5-afbd-7de0ee97cf4e">
 
 ### 5.1重点类的设计
 
@@ -388,7 +388,7 @@ private HashMap<Value, Integer> value2Stack;
 
 总体而言，对于一个函数，其运行栈从栈底到栈顶依次为参数区和变量去。
 
-![存储管理](D:/Typora/img/存储管理.svg)
+<img width="285" alt="image" src="https://github.com/KouweiLee/BUAA-2022-SysYCompiler/assets/98637586/316e8e06-4ad8-4562-a007-e255ce77ae07">
 
 #### 函数调用
 
@@ -425,7 +425,7 @@ mem2reg总共分有3步：构建数据流图/支配树，插入phi指令，变�
 
    * 直接支配者：若n1是n2的直接支配者，那么n1严格支配n2，且n1不严格支配所有严格支配n2的节点的节点。根据直接支配关系可以构造出**支配树**，n1作为父节点，n2作为子节点。下面是软院教程中控制流图和其对应的支配树的一个示例：
 
-     <img src="D:/Typora/img/cfg_and_dom_tree.png" alt="CFG 和支配树" style="zoom: 33%;" />
+     <img width="531" alt="image" src="https://github.com/KouweiLee/BUAA-2022-SysYCompiler/assets/98637586/debbec6c-58c6-4625-9151-5980e0ce2c63">
 
      具体做法是：针对一个基本块b，它的直接支配者idom一定是它的支配者。因此遍历b的所有支配者dom，依次调用函数`isIdom(dom, b)`，若返回`true`，则dom是b的直接支配者；否则，dom不是b的直接支配者。该函数的逻辑和定义保持一致：如果A 直接支配 B, 那么A首先严格支配B : A支配B且A不等于B；并且不严格支配任何严格支配n的节点的节点: A支配的所有基本块（除了A本身）,  其中不能有严格支配B的。
 
@@ -500,7 +500,7 @@ HashSet<BasicBlock> defBBs = new HashSet<>();//使用指令所在基本块
 
 如果一个alloca指令并不满足上面两种剪枝条件，那么采用标准插入phi算法：
 
-<img src="D:/Typora/img/algorithm_insert_phi.png" alt="insert phi" style="zoom:67%;" />
+<img width="578" alt="image" src="https://github.com/KouweiLee/BUAA-2022-SysYCompiler/assets/98637586/e082387b-c171-44fc-a54f-e386128af1bc">
 
 其中F集合为需要加入Phi指令的基本块集合，W为包含变量定义点的基本块。初始时W等于`defBBs`。如果W不为空，那么从W中移出一个基本块X，X的支配边界中的所有基本块Y，就是要插入phi指令的基本块，将Y加入到F中。这样一来，Y其实就包含了该变量的定义点，因此需要将Y加入到W中。重复这个步骤，一直到W为空集。
 
@@ -510,7 +510,7 @@ HashSet<BasicBlock> defBBs = new HashSet<>();//使用指令所在基本块
 
 在插入Phi函数之后，变量的存活区间其实被分成了几段，我们需要给每段不同的变量名，同时维护变量的到达定义点使得语义与转换为SSA形式之前的中间代码相一致。算法如下：
 
-<img src="D:/Typora/img/algorithm_rename_variable.png" alt="rename variable" style="zoom: 67%;" />
+<img width="583" alt="image" src="https://github.com/KouweiLee/BUAA-2022-SysYCompiler/assets/98637586/ea4663a7-f3c3-4b83-bbe5-67464bc8fd5a">
 
 实现过程与上述算法思想一致，但略有修改。具体而言，对支配树进行DFS，当搜索到一个基本块BB时：
 
