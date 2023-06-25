@@ -117,6 +117,7 @@ public class RemovePhi {
             //按前驱基本块的顺序存储pcopy
             List<Pcopy> pcopys = new ArrayList<>();
             List<BasicBlock> precs = new ArrayList<>(bb.getPrecBBs());
+            //pcopy存储在前驱基本块或Mid基本块里
             for (int j = 0; j < precs.size(); j++) {
                 if (precs.get(j).getSuccBBs().size() == 1) {
                     Pcopy pcopy = new Pcopy(precs.get(j));
